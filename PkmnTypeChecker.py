@@ -65,15 +65,15 @@ class Pokemon:
         damage_relations = type_data["damage_relations"]
 
         for type in damage_relations["no_damage_from"]:
-            if not type in self.immunities:
-                self.immunities.append(type["name"])
+            clear_duplicates(type["name"])
+            self.immunities.append(type["name"])
         
         for type in damage_relations["double_damage_from"]:
-            if not type in self.immunities:   
+            if not type["name"] in self.immunities:   
                 sort_type(type["name"], calc_score(type["name"], self.WEAKNESS))
         
         for type in damage_relations["half_damage_from"]:
-            if not type in self.immunities:
+            if not type["name"] in self.immunities:
                 sort_type(type["name"], calc_score(type["name"], self.RESISTANCE))
 
     
