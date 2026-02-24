@@ -117,10 +117,16 @@ def get_type_data(data, slot: int):
         exit()
     return response.json()
 
+def convert_common_mistypes(name):
+    if name == "mimikyu":
+        return "mimikyu-disguised" # THIS IS SO DUMB WHAT THE FUCK WHY IS POKEAPI LIKE THIS?!?!?! (sob)
+    else:
+        return name
+
 # Program Start
 while True:
     pokemon = Pokemon()
-    pokemon.name = input("Enter the pokemon's name: ")
+    pokemon.name = convert_common_mistypes(input("Enter the pokemon's name: "))
 
     data = get_pokemon_data(pokemon.name)
 
