@@ -99,6 +99,15 @@ class Pokemon:
             print(type)
         print()
         print("Anything not listed here means the pokemon takes neutral damage from it")
+    
+    def reset(self):
+        self.weaknesses = []
+        self.super_weaknesses = []
+        self.neutrals = []
+        self.resistances = []
+        self.super_resistances = []
+        self.immunities = []
+
 
 def get_pokemon_data(pokemon_name):
     api_url = ("https://pokeapi.co/api/v2/pokemon/" + pokemon_name)
@@ -107,6 +116,7 @@ def get_pokemon_data(pokemon_name):
         print("Could not find any data on '" + pokemon_name +"'. Are you sure you spelt it correctly?")
         exit()
     return response.json()
+
 
 def get_type_data(data, slot: int):
     type_name = data["types"][slot]["type"]["name"]
@@ -117,25 +127,23 @@ def get_type_data(data, slot: int):
         exit()
     return response.json()
 
+
 def convert_common_mistypes(name):
     if name == "mimikyu":
         return "mimikyu-disguised" # THIS IS SO DUMB WHAT THE FUCK WHY IS POKEAPI LIKE THIS?!?!?! (sob)
     else:
         return name
 
-# Program Start
-while True:
-    pokemon = Pokemon()
-    pokemon.name = convert_common_mistypes(input("Enter the pokemon's name: "))
 
-    data = get_pokemon_data(pokemon.name)
+pokemon = Pokemon()
+pokemon.name = convert_common_mistypes(input("Enter the pokemon's name: "))
 
-    is_dualtype = (len(data["types"]) == 2)
-    type1 = get_type_data(data, 0)
-    pokemon.add_type(type1)
-    if is_dualtype:
-        type2 = get_type_data(data, 1)
-        pokemon.add_type(type2)
-    pokemon.print_relations()
-    if input("Would you like to continue? (Y/n): ").lower == "n":
-        exit()
+data = get_pokemon_data(pokemon.name)
+
+is_dualtype = (len(data["types"]) == 2)
+type1 = get_type_data(data, 0)
+pokemon.add_type(type1)
+if is_dualtype:
+    type2 = get_type_data(data, 1)
+    pokemon.add_type(type2)
+pokemon.print_relations()
